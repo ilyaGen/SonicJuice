@@ -72,6 +72,7 @@
 
 - (void)deallocateRenderResources {
     _inputBus.deallocateRenderResources();
+    // processWithEvents(timestamp, frameCount, realtimeEventListHead, nil /* MIDIOutEventBlock */);
 }
 
 #pragma mark - AUAudioUnit (AUAudioUnitImplementation)
@@ -108,7 +109,7 @@
 
         state->setBuffers(outAudioBufferList);
         
-        //state->processWithEvents(timestamp, frameCount, realtimeEventListHead, nil /* MIDIOutEventBlock */);
+        state->processWithEvents(timestamp, frameCount, realtimeEventListHead, nil /* MIDIOutEventBlock */);
         
         return noErr;
     };

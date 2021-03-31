@@ -11,7 +11,7 @@ import AudioToolbox
 import AVFoundation
 import CoreAudioKit
 
-@_exported import CppKernel
+@_exported import ObjCInterface
 
 fileprivate extension AUAudioUnitPreset {
     convenience init(number: Int, name: String) {
