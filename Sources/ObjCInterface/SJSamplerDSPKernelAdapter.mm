@@ -14,17 +14,15 @@
     // C++ members need to be ivars; they would be copied on access if they were properties.
     SJSamplerDSPKernel  _kernel;
     BufferedInputBus _inputBus;
-    AVAudioPCMBuffer* _pcmBuffer;
 }
 
-- (instancetype)init:(AVAudioPCMBuffer *) buffer {
+- (instancetype)init {
 
     if (self = [super init]) {
         AVAudioFormat *format = [[AVAudioFormat alloc] initStandardFormatWithSampleRate:44100 channels:2];
         // Create a DSP kernel to handle the signal processing.
         
-        _kernel.init(format.channelCount, format.sampleRate, buffer);
-        _pcmBuffer = buffer;
+        _kernel.init(format.channelCount, format.sampleRate);
         
         _kernel.setParameter(0, 0);
 
@@ -66,13 +64,23 @@
 
 - (void)allocateRenderResources {
     _inputBus.allocateRenderResources(self.maximumFramesToRender);
-    _kernel.init(self.outputBus.format.channelCount, self.outputBus.format.sampleRate, _pcmBuffer);
+    _kernel.init(self.outputBus.format.channelCount, self.outputBus.format.sampleRate);
     _kernel.reset();
 }
 
 - (void)deallocateRenderResources {
     _inputBus.deallocateRenderResources();
     // processWithEvents(timestamp, frameCount, realtimeEventListHead, nil /* MIDIOutEventBlock */);
+}
+
+
+//MARK: - Sampler methods
+
+- (void)loadPCMBuffer:(AVAudioPCMBuffer *)buffer {
+    
+    const AudioBufferList* bufferList = buffer.audioBufferList;
+    
+    _kernel.setSampleBuffer(bufferList);
 }
 
 #pragma mark - AUAudioUnit (AUAudioUnitImplementation)

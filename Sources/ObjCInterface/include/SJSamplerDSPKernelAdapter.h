@@ -26,7 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)shouldBypassEffect;
 - (void)setShouldBypassEffect:(BOOL)bypass;
 
-- (instancetype)init:(AVAudioPCMBuffer *)buffer;
+
+//MARK: - My implementations
+- (void)loadPCMBuffer:(AVAudioPCMBuffer *)buffer;
+
+//
+
+- (instancetype)init;
 
 @end
 

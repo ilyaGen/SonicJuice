@@ -34,7 +34,13 @@ public class SJSampler {
     public func stop() {
         audioUnit?.shouldBypassEffect = true
     }
-
+    
+    
+    func loadPCMBuffer(_ buffer: AVAudioPCMBuffer) {
+        audioUnit?.loadPCMBuffer(buffer)
+    }
+    
+    
     // The audio unit's filter cutoff frequency parameter object.
     private var pitchParameter: AUParameter!
 

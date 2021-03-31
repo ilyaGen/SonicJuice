@@ -73,17 +73,8 @@ public class AUv3SJSampler: AUAudioUnit {
                          options: AudioComponentInstantiationOptions = []) throws {
 
         // Create adapter to communicate to underlying C++ DSP code
-        let url = Bundle.main.url(forResource: "LOOP", withExtension: "wav")!
         
-        let file = try! AVAudioFile(forReading: url)
-        
-        let format = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: file.fileFormat.sampleRate, channels: file.fileFormat.channelCount, interleaved: false)!
-        
-        let pcmBuffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: AVAudioFrameCount(file.length))!
-        
-        try file.read(into: pcmBuffer, frameCount: AVAudioFrameCount(file.length))
-        
-        kernelAdapter = SJSamplerDSPKernelAdapter(pcmBuffer)
+        kernelAdapter = SJSamplerDSPKernelAdapter()
         
         // Create parameters object to control pitch
         parameters = AUv3SJSamplerParameters(kernelAdapter: kernelAdapter)
@@ -147,3 +138,12 @@ public class AUv3SJSampler: AUAudioUnit {
     }
 }
 
+
+//MARK: - Sampler methods
+
+extension AUv3SJSampler {
+    
+    func loadPCMBuffer(_ buffer: AVAudioPCMBuffer) {
+        kernelAdapter.load(buffer)
+    }
+}

@@ -27,7 +27,7 @@ public:
 
     SJSamplerDSPKernel() : pitch(0) {}
 
-    void init(int channelCount, double inSampleRate, AVAudioPCMBuffer* buffer) {
+    void init(int channelCount, double inSampleRate) {
         //channelStates.resize(channelCount);
         
         chanCount = channelCount;
@@ -37,8 +37,6 @@ public:
         inverseNyquist = 1.0 / nyquist;
         dezipperRampDuration = (AUAudioFrameCount)floor(0.02 * sampleRate);
         
-        
-        pcmBuffer = buffer;
     }
 
     void reset() {
@@ -76,6 +74,10 @@ public:
     void setBuffers(AudioBufferList* outBufferList) {
         //inBufferListPtr = inBufferList;
         outBufferListPtr = outBufferList;
+    }
+    
+    void setSampleBuffer(const AudioBufferList* pcmBufferList) {
+        pcmBufferListPtr = pcmBufferList;
     }
 
     void process(AUAudioFrameCount frameCount, AUAudioFrameCount bufferOffset) override {
@@ -115,14 +117,14 @@ private:
 
     AudioBufferList* inBufferListPtr = nullptr;
     AudioBufferList* outBufferListPtr = nullptr;
+    
+    const AudioBufferList* pcmBufferListPtr = nullptr;
 
     bool bypassed = false;
 
 public:
     // Parameters.
     AUValue pitch;
-    
-    AVAudioPCMBuffer* pcmBuffer;// = nullptr;
 };
 
 #endif /* FilterDSPKernel_hpp */

@@ -26,7 +26,7 @@ let package = Package(
             dependencies: [],
             publicHeadersPath: "include",
             cxxSettings: [
-                .headerSearchPath("../CPP/Headers"),
+                .headerSearchPath("../CppHeaders"),
             ],
             linkerSettings: [
                 .linkedFramework("AudioToolbox"),
@@ -37,9 +37,13 @@ let package = Package(
         ),
         .target(
             name: "SonicJuice",
-            dependencies: ["ObjCInterface"]),
+            dependencies: ["ObjCInterface"]
+            ),
         .testTarget(
             name: "SonicJuiceTests",
-            dependencies: ["SonicJuice"]),
+            dependencies: ["SonicJuice"],
+            resources: [
+                .copy("Resources")]
+        ),
     ]
 )
